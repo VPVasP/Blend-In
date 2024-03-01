@@ -26,6 +26,10 @@ public class CollectInfo : MonoBehaviour
         if (renderer.material.color== player.GetComponent<Renderer>().material.color)
         {
             colorCheck.GetComponent<Renderer>().material.color = Color.green;
+        }
+        else if (player.GetComponent<Movement>().isInvisible)
+        {
+            colorCheck.GetComponent<Renderer>().material.color = Color.green;
             colorsMatch = true;
         }
         else

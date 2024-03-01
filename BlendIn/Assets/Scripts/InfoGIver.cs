@@ -3,19 +3,24 @@ using UnityEngine.UI;
 
 public class InfoGIver : MonoBehaviour
 {
-   [SerializeField] CollectInfo info;
+    CollectInfo info;
     private Slider infoSlider;
+    private bool isInfoGiven;
+    [SerializeField] private Slider generalInfoGiverSlider;
     private void Start()
     {
         info = transform.parent.GetComponent<CollectInfo>();
         infoSlider = gameObject.GetComponentInChildren<Slider>();
         infoSlider.gameObject.SetActive(false);
+        generalInfoGiverSlider = GameObject.Find("GeneralInfoSlider").GetComponent<Slider>();
     }
     private void Update()
     {
-        if (infoSlider.value==100)
+        if (infoSlider.value==100&&!isInfoGiven)
         {
+            generalInfoGiverSlider.value += 20;
             Debug.Log("Slider is now full");
+            isInfoGiven = true;
         }
     }
     private void OnTriggerStay(Collider other)

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -9,22 +10,27 @@ public class Movement : MonoBehaviour
     private Vector3 playerVelocity;
     private AudioSource aud;
     public Color[] colors;
-
+    public bool isInvisible;
+    private new Renderer renderer;
+    private IEnumerator coroutine;
     private void Start()
     {
-      //  anim = GetComponent<Animator>();
+        //  anim = GetComponent<Animator>();
+        renderer = GetComponent<Renderer>();
         characterController = GetComponent<CharacterController>();
         gameObject.tag = "Player";
         aud = GetComponent<AudioSource>();
         colors[0] = Color.red;
         colors[1] = Color.green;
         colors[2] = Color.blue;
+        colors[3] = Color.gray;
     }
     private void Update()
     {
 
         MovementFunction();
         ChangeMaterial();
+        ResetVisibility();
     }
     private void MovementFunction()
     {
@@ -38,12 +44,12 @@ public class Movement : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(0, angle, 0);
         }
-      
-      
+
+
     }
     private void ChangeMaterial()
     {
-        Renderer renderer = GetComponent<Renderer>();
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
 
@@ -52,22 +58,61 @@ public class Movement : MonoBehaviour
                 renderer.material.color = Color.red;
             }
         }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+
+            if (renderer != null)
             {
-   
-                if (renderer != null)
-                {
                 renderer.material.color = Color.green;
             }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+
+            if (renderer != null)
             {
-               
-                if (renderer != null)
-                {
                 renderer.material.color = Color.blue;
-                }
+            }
+
+
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && !isInvisible && InvisibilitySlider.instance.invisibilitySlider.value==100)
+        {
+
+            if (renderer != null)
+            {
+                renderer.material.color = Color.gray;
+                isInvisible = true;
             }
         }
     }
+
+    private void ResetVisibility()
+    {
+        if (isInvisible && coroutine == null)
+        {
+            InvisibilitySlider.instance.ResetSliderValue();
+            coroutine = ResetInvisibilityEnumerator(2.0f);
+            StartCoroutine(coroutine);
+        }
+    }
+
+
+    private IEnumerator ResetInvisibilityEnumerator(float waitTime)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            if (renderer != null)
+            {
+                renderer.material.color = Color.red;
+                isInvisible = false;
+                
+            }
+            coroutine = null;
+            yield break; 
+        }
+    }
+}
 
