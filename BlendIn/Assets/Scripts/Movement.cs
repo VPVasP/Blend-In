@@ -9,7 +9,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private float walkSpeed;
     private Vector3 playerVelocity;
     private AudioSource aud;
-    public Color[] colors;
     public bool isInvisible;
     private new Renderer renderer;
     private IEnumerator coroutine;
@@ -20,10 +19,7 @@ public class Movement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         gameObject.tag = "Player";
         aud = GetComponent<AudioSource>();
-        colors[0] = Color.red;
-        colors[1] = Color.green;
-        colors[2] = Color.blue;
-        colors[3] = Color.gray;
+        renderer.material.color = Color.red;
     }
     private void Update()
     {
@@ -77,7 +73,7 @@ public class Movement : MonoBehaviour
 
 
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !isInvisible && InvisibilitySlider.instance.invisibilitySlider.value==100)
+        if (Input.GetKeyDown(KeyCode.Space) && !isInvisible && SliderManager.instance.invisibilitySlider.value==100)
         {
 
             if (renderer != null)
@@ -92,7 +88,7 @@ public class Movement : MonoBehaviour
     {
         if (isInvisible && coroutine == null)
         {
-            InvisibilitySlider.instance.ResetSliderValue();
+            SliderManager.instance.ResetSliderValue();
             coroutine = ResetInvisibilityEnumerator(2.0f);
             StartCoroutine(coroutine);
         }
