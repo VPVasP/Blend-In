@@ -19,7 +19,7 @@ public class InfoGIver : MonoBehaviour
         info = transform.parent.GetComponent<CollectInfo>();
         infoSlider = gameObject.GetComponentInChildren<Slider>();
         infoSlider.gameObject.SetActive(false);
-        generalInfoGiverSlider = GameObject.Find("GeneralInfoSlider").GetComponent<Slider>();
+        generalInfoGiverSlider = GameObject.Find("CollectedInfoSlider").GetComponent<Slider>();
         sliderImage.gameObject.SetActive(false);
         aud = GetComponent<AudioSource>();
         aud.playOnAwake = false;

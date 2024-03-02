@@ -7,7 +7,7 @@ public class CollectInfo : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject colorCheck;
     public bool colorsMatch;
-    public bool isRed, isBlue, isGreen;
+    public bool isRed, isBlue, isYellow;
     [SerializeField] Renderer meshRenderer;
     private void Start()
     {
@@ -21,9 +21,9 @@ public class CollectInfo : MonoBehaviour
         {
             meshRenderer.material.color = Color.blue;
         }
-      if(isGreen)
+      if(isYellow)
         {
-            meshRenderer.material.color = Color.green;
+            meshRenderer.material.color = Color.yellow;
         }
     }
     

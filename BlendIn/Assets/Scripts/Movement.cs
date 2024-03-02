@@ -13,9 +13,11 @@ public class Movement : MonoBehaviour
     private new Renderer renderer;
     private IEnumerator coroutine;
     private Animator anim;
+    [SerializeField] private AudioClip invisibleClip;
+    [SerializeField] private AudioClip resetInvisibleClip;
     private void Start()
     {
-         anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         renderer = GetComponentInChildren<Renderer>();
         characterController = GetComponent<CharacterController>();
         gameObject.tag = "Player";
@@ -59,6 +61,8 @@ public class Movement : MonoBehaviour
 
             if (renderer != null)
             {
+                aud.clip = resetInvisibleClip;
+                aud.Play();
                 renderer.material.color = Color.red;
             }
         }
@@ -67,7 +71,9 @@ public class Movement : MonoBehaviour
 
             if (renderer != null)
             {
-                renderer.material.color = Color.green;
+                aud.clip = resetInvisibleClip;
+                aud.Play();
+                renderer.material.color = Color.yellow;
             }
 
         }
@@ -76,6 +82,8 @@ public class Movement : MonoBehaviour
 
             if (renderer != null)
             {
+                aud.clip = resetInvisibleClip;
+                aud.Play();
                 renderer.material.color = Color.blue;
             }
 
@@ -86,6 +94,8 @@ public class Movement : MonoBehaviour
 
             if (renderer != null)
             {
+                aud.clip = invisibleClip;
+                aud.Play();
                 renderer.material.color = Color.gray;
                 isInvisible = true;
             }
@@ -97,7 +107,7 @@ public class Movement : MonoBehaviour
         if (isInvisible && coroutine == null)
         {
             SliderManager.instance.ResetSliderValue();
-            coroutine = ResetInvisibilityEnumerator(2.0f);
+            coroutine = ResetInvisibilityEnumerator(4.0f);
             StartCoroutine(coroutine);
         }
     }
@@ -110,6 +120,8 @@ public class Movement : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
             if (renderer != null)
             {
+                aud.clip = resetInvisibleClip;
+                aud.Play();
                 renderer.material.color = Color.red;
                 isInvisible = false;
                 
