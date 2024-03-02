@@ -12,6 +12,8 @@ public class InfoGIver : MonoBehaviour
     [SerializeField] private AudioClip checkSoundEffect;
     [SerializeField] private AudioClip alertedSoundEffect;
     private bool playedWarningSound;
+    [SerializeField] MeshRenderer meshRendered;
+    [SerializeField] private AudioSource informationGivenSoundEffect;
     private void Start()
     {
         info = transform.parent.GetComponent<CollectInfo>();
@@ -21,19 +23,19 @@ public class InfoGIver : MonoBehaviour
         sliderImage.gameObject.SetActive(false);
         aud = GetComponent<AudioSource>();
         aud.playOnAwake = false;
-        this.GetComponent<MeshRenderer>().enabled = true;
+        meshRendered = GetComponent<MeshRenderer>();
     }
     private void Update()
     {
         if (infoSlider.value==100&&!isInfoGiven)
         {
+            informationGivenSoundEffect.Play();
             generalInfoGiverSlider.value += 20;
-            this.GetComponent<MeshRenderer>().enabled = false;
-            Debug.Log("Slider is now full");
-            isInfoGiven = true;
             sliderImage.gameObject.SetActive(true);
+            isInfoGiven = true;
             aud.loop = false;
-
+            Debug.Log("Slider is now full");
+            Destroy(this.gameObject, 2f);
 
         }
     }
@@ -47,14 +49,14 @@ public class InfoGIver : MonoBehaviour
             {
                 infoSlider.value += 15 *Time.deltaTime;
                 infoSlider.gameObject.SetActive(true);
-               
+                aud.Stop();
             }
             
             if (!info.colorsMatch)
             {
                 Debug.Log("Colors dont match");
                 SliderManager.instance.AlertedSliderValue();
-                this.GetComponent<MeshRenderer>().material.color = Color.red;
+                meshRendered.material.color = Color.red;
                 if (!playedWarningSound)
                 {
                     aud.clip = alertedSoundEffect;

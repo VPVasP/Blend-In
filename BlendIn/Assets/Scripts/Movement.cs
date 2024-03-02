@@ -12,10 +12,11 @@ public class Movement : MonoBehaviour
     public bool isInvisible;
     private new Renderer renderer;
     private IEnumerator coroutine;
+    private Animator anim;
     private void Start()
     {
-        //  anim = GetComponent<Animator>();
-        renderer = GetComponent<Renderer>();
+         anim = GetComponent<Animator>();
+        renderer = GetComponentInChildren<Renderer>();
         characterController = GetComponent<CharacterController>();
         gameObject.tag = "Player";
         aud = GetComponent<AudioSource>();
@@ -40,7 +41,14 @@ public class Movement : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(0, angle, 0);
         }
-
+        if (characterController.velocity.magnitude > 0.1f)
+        {
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
+        }
 
     }
     private void ChangeMaterial()

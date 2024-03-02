@@ -8,8 +8,10 @@ public class NpcMovement : MonoBehaviour
     NavMeshAgent agent;
     [SerializeField] private Transform[] waypoints;
     private int currentWaypointIndex = 0;
+    private Animator anim;
     private void Start()
     {
+        anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         SetNewTarget(waypoints[0]);
     }

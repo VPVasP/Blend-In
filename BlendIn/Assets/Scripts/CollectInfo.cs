@@ -8,21 +8,22 @@ public class CollectInfo : MonoBehaviour
     [SerializeField] private GameObject colorCheck;
     public bool colorsMatch;
     public bool isRed, isBlue, isGreen;
+    [SerializeField] Renderer meshRenderer;
     private void Start()
     {
-        Renderer renderer = GetComponent<Renderer>();
+        meshRenderer = GetComponentInChildren<Renderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         if (isRed)
         {
-            renderer.material.color = Color.red;
+            meshRenderer.material.color = Color.red;
         }
       if(isBlue)
         {
-            renderer.material.color = Color.blue;
+            meshRenderer.material.color = Color.blue;
         }
       if(isGreen)
         {
-            renderer.material.color = Color.green;
+            meshRenderer.material.color = Color.green;
         }
     }
     
@@ -32,8 +33,8 @@ public class CollectInfo : MonoBehaviour
     }
     void CheckIfColorsMatch()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer.material.color== player.GetComponent<Renderer>().material.color)
+        
+        if (meshRenderer.material.color== player.GetComponentInChildren<Renderer>().material.color)
         {
             colorCheck.GetComponent<Renderer>().material.color = Color.green;
             colorsMatch = true;
