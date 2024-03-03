@@ -7,12 +7,16 @@ public class CollectInfo : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject colorCheck;
     public bool colorsMatch;
-    public bool isRed, isBlue, isYellow;
+    public bool isWhite,isRed, isBlue, isYellow;
     [SerializeField] Renderer meshRenderer;
     private void Start()
     {
         meshRenderer = GetComponentInChildren<Renderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        if (isWhite)
+        {
+            meshRenderer.material.color = Color.white;
+        }
         if (isRed)
         {
             meshRenderer.material.color = Color.red;

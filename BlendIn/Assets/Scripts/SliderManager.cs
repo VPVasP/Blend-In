@@ -23,6 +23,7 @@ public class SliderManager : MonoBehaviour
         alertedSlider = GameObject.Find("AlertedSlider").GetComponent<Slider>();
         collectInfoSlider = GameObject.Find("CollectedInfoSlider").GetComponent<Slider>();
         alertedSlider.value = 0;
+        collectInfoSlider.maxValue = 160;
     }
     private void Update()
     {
@@ -34,7 +35,7 @@ public class SliderManager : MonoBehaviour
         {
             EndGame.instance.PlayerDied();
         }
-        if (collectInfoSlider.value == 100)
+        if (collectInfoSlider.value == 160)
         {
             EndGame.instance.WonGame();
         }

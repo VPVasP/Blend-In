@@ -9,11 +9,12 @@ public class InfoGIver : MonoBehaviour
     [SerializeField] private Slider generalInfoGiverSlider;
     [SerializeField] private Image sliderImage;
     public AudioSource aud;
-    [SerializeField] private AudioClip checkSoundEffect;
     [SerializeField] private AudioClip alertedSoundEffect;
+    [SerializeField]   private bool playedCollectingInfoSound;
     private bool playedWarningSound;
     [SerializeField] MeshRenderer meshRendered;
-    [SerializeField] private AudioSource informationGivenSoundEffect;
+    [SerializeField] private AudioClip collectingInfoSoundEffect;
+    [SerializeField] private AudioClip informationGivenSoundEffect;
     private void Start()
     {
         info = transform.parent.GetComponent<CollectInfo>();
@@ -29,7 +30,8 @@ public class InfoGIver : MonoBehaviour
     {
         if (infoSlider.value==100&&!isInfoGiven)
         {
-            informationGivenSoundEffect.Play();
+            aud.clip = informationGivenSoundEffect;
+            aud.Play();
             generalInfoGiverSlider.value += 20;
             sliderImage.gameObject.SetActive(true);
             isInfoGiven = true;
@@ -42,18 +44,28 @@ public class InfoGIver : MonoBehaviour
    
     private void OnTriggerStay(Collider other)
     {
-      
+            
         if (other.CompareTag("Player")&&!isInfoGiven)
         {
+            //if the colors match add 15 value each seacond and activate the slider
             if (info.colorsMatch)
             {
                 infoSlider.value += 15 *Time.deltaTime;
                 infoSlider.gameObject.SetActive(true);
-                aud.Stop();
+                if (!playedCollectingInfoSound)
+                {
+                    aud.clip = collectingInfoSoundEffect;
+                    aud.Play();
+                    aud.loop = true;
+                    playedCollectingInfoSound = true;
+                }
+               
             }
+            //if the colors dont match update the alerted slider value
             
             if (!info.colorsMatch)
             {
+                
                 Debug.Log("Colors dont match");
                 SliderManager.instance.AlertedSliderValue();
                 meshRendered.material.color = Color.red;
@@ -71,11 +83,13 @@ public class InfoGIver : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         infoSlider.gameObject.SetActive(false);
-       
+        playedCollectingInfoSound = false;
+        aud.Stop();
         if (!info.colorsMatch)
         {
             Debug.Log("Colors dont match");
             playedWarningSound = false;
+            playedCollectingInfoSound = false;
             aud.Stop();
         }
     }

@@ -22,7 +22,7 @@ public class Movement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         gameObject.tag = "Player";
         aud = GetComponent<AudioSource>();
-        renderer.material.color = Color.red;
+        renderer.material.color = Color.white;
     }
     private void Update()
     {
@@ -63,7 +63,7 @@ public class Movement : MonoBehaviour
             {
                 aud.clip = resetInvisibleClip;
                 aud.Play();
-                renderer.material.color = Color.red;
+                renderer.material.color = Color.white;
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -86,9 +86,18 @@ public class Movement : MonoBehaviour
                 aud.Play();
                 renderer.material.color = Color.blue;
             }
-
-
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+
+            if (renderer != null)
+            {
+                aud.clip = resetInvisibleClip;
+                aud.Play();
+                renderer.material.color = Color.red;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && !isInvisible && SliderManager.instance.invisibilitySlider.value==100)
         {
 

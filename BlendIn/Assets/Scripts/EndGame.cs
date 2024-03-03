@@ -24,6 +24,7 @@ public class EndGame : MonoBehaviour
         Time.timeScale = 1;
         player = GameObject.FindGameObjectWithTag("Player");
     }
+    //function that handles when the gae ends
     public void PlayerDied()
     {
         endScreen.SetActive(true);
@@ -43,6 +44,7 @@ public class EndGame : MonoBehaviour
         player.GetComponent<Movement>().enabled = false;
         Invoke("RestartScene", 3f);
     }
+    //function that restarts the game
   void  RestartScene()
     {
         SceneManager.LoadScene("GameScene");
