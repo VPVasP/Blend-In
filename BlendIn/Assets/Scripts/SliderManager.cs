@@ -9,6 +9,7 @@ public class SliderManager : MonoBehaviour
     public Slider invisibilitySlider;
     public Slider alertedSlider;
     public Slider collectInfoSlider;
+    [SerializeField] private Image warningIcon;
     private void Awake()
     {
         if (instance == null)
@@ -22,6 +23,7 @@ public class SliderManager : MonoBehaviour
         invisibilitySlider.value = 100;
         alertedSlider = GameObject.Find("AlertedSlider").GetComponent<Slider>();
         collectInfoSlider = GameObject.Find("CollectedInfoSlider").GetComponent<Slider>();
+        warningIcon = GameObject.Find("WarningIcon").GetComponent<Image>();
         alertedSlider.value = 0;
         collectInfoSlider.maxValue = 160;
     }
@@ -34,6 +36,10 @@ public class SliderManager : MonoBehaviour
         if (alertedSlider.value >= 100)
         {
             EndGame.instance.PlayerDied();
+        }
+        if (alertedSlider.value >=50)
+        {
+            warningIcon.GetComponent<Animator>().SetBool("isWarningActivated", true);
         }
         if (collectInfoSlider.value == 160)
         {

@@ -9,9 +9,13 @@ public class CollectInfo : MonoBehaviour
     public bool colorsMatch;
     public bool isWhite,isRed, isBlue, isYellow;
     [SerializeField] Renderer meshRenderer;
+  [SerializeField]  private Transform mainCamera;
+    [SerializeField] private Canvas canvas;
     private void Start()
     {
         meshRenderer = GetComponentInChildren<Renderer>();
+        canvas = GetComponentInChildren<Canvas>();
+        mainCamera = Camera.main.transform;
         player = GameObject.FindGameObjectWithTag("Player");
         if (isWhite)
         {
@@ -37,7 +41,7 @@ public class CollectInfo : MonoBehaviour
     }
     void CheckIfColorsMatch()
     {
-        
+        CanvasFaceCamera();
         if (meshRenderer.material.color== player.GetComponentInChildren<Renderer>().material.color)
         {
             colorCheck.GetComponent<Renderer>().material.color = Color.green;
@@ -53,5 +57,10 @@ public class CollectInfo : MonoBehaviour
             colorCheck.GetComponent<Renderer>().material.color = Color.red;
             colorsMatch = false;
         }
+    }
+    private void CanvasFaceCamera()
+    {
+        canvas.transform.LookAt(canvas.transform.position + mainCamera.rotation * Vector3.forward,
+                         mainCamera.rotation * Vector3.up);
     }
 }

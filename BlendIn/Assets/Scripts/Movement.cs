@@ -15,6 +15,9 @@ public class Movement : MonoBehaviour
     private Animator anim;
     [SerializeField] private AudioClip invisibleClip;
     [SerializeField] private AudioClip resetInvisibleClip;
+    [SerializeField] private Material normalMaterial;
+    [SerializeField] private Material invisibleMaterial;
+    private Color previousColor;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -23,6 +26,7 @@ public class Movement : MonoBehaviour
         gameObject.tag = "Player";
         aud = GetComponent<AudioSource>();
         renderer.material.color = Color.white;
+        previousColor = Color.white;
     }
     private void Update()
     {
@@ -105,7 +109,8 @@ public class Movement : MonoBehaviour
             {
                 aud.clip = invisibleClip;
                 aud.Play();
-                renderer.material.color = Color.gray;
+                previousColor = renderer.material.color;
+                renderer.material = invisibleMaterial;
                 isInvisible = true;
             }
         }
@@ -131,7 +136,8 @@ public class Movement : MonoBehaviour
             {
                 aud.clip = resetInvisibleClip;
                 aud.Play();
-                renderer.material.color = Color.red;
+                renderer.material = normalMaterial;
+                renderer.material.color = previousColor;
                 isInvisible = false;
                 
             }
