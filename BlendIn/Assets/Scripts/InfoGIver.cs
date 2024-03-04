@@ -80,6 +80,7 @@ public class InfoGIver : MonoBehaviour
             }
         }
     }
+    //when we exit the trigger
     private void OnTriggerExit(Collider other)
     {
         infoSlider.gameObject.SetActive(false);
@@ -93,4 +94,5 @@ public class InfoGIver : MonoBehaviour
             aud.Stop();
         }
     }
-}
+       
+    }

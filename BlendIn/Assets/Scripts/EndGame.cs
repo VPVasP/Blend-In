@@ -34,6 +34,7 @@ public class EndGame : MonoBehaviour
         player.GetComponent<Movement>().enabled = false;
         Invoke("RestartScene", 3f);
     }
+    //function that handles when the game is won
     public void WonGame()
     {
 

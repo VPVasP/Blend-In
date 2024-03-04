@@ -37,8 +37,11 @@ public class Movement : MonoBehaviour
     }
     private void MovementFunction()
     {
+        //handle the player movement 
         Vector3 moveVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         characterController.Move(moveVector * Time.deltaTime * walkSpeed);
+
+        //rotate the player 
         if (moveVector != Vector3.zero)
         {
             float targetAngle = Mathf.Atan2(moveVector.x, moveVector.z) * Mathf.Rad2Deg;
@@ -47,6 +50,7 @@ public class Movement : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(0, angle, 0);
         }
+        //walking animation
         if (characterController.velocity.magnitude > 0.1f)
         {
             anim.SetBool("isWalking", true);
@@ -59,7 +63,7 @@ public class Movement : MonoBehaviour
     }
     private void ChangeMaterial()
     {
-
+        //change the player's material based on the input of the user
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
 
@@ -101,7 +105,7 @@ public class Movement : MonoBehaviour
                 renderer.material.color = Color.red;
             }
         }
-
+        //become invisible 
         if (Input.GetKeyDown(KeyCode.Space) && !isInvisible && SliderManager.instance.invisibilitySlider.value==100)
         {
 
@@ -115,23 +119,27 @@ public class Movement : MonoBehaviour
             }
         }
     }
-
+    //reset the invisibility 
     private void ResetVisibility()
     {
         if (isInvisible && coroutine == null)
         {
             SliderManager.instance.ResetSliderValue();
+            //call a coroutine to reset invisibility after 4 seconds
             coroutine = ResetInvisibilityEnumerator(4.0f);
             StartCoroutine(coroutine);
         }
     }
 
-
+    //reset the invisibility coroutine
     private IEnumerator ResetInvisibilityEnumerator(float waitTime)
     {
         while (true)
         {
             yield return new WaitForSeconds(waitTime);
+
+            //reset the material and visibility
+
             if (renderer != null)
             {
                 aud.clip = resetInvisibleClip;
