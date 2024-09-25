@@ -20,7 +20,6 @@ public class NpcMovement : MonoBehaviour
     {
         if (agent.remainingDistance < 0.1f && !agent.pathPending)
         {
-            
             SetNextTarget();
         }
     }

@@ -8,13 +8,10 @@ public class InfoGIver : MonoBehaviour
     private bool isInfoGiven;
     [SerializeField] private Slider generalInfoGiverSlider;
     [SerializeField] private Image sliderImage;
-    public AudioSource aud;
-    [SerializeField] private AudioClip alertedSoundEffect;
-    [SerializeField]   private bool playedCollectingInfoSound;
-    private bool playedWarningSound;
-    [SerializeField] MeshRenderer meshRendered;
-    [SerializeField] private AudioClip collectingInfoSoundEffect;
-    [SerializeField] private AudioClip informationGivenSoundEffect;
+    [SerializeField] private bool playedCollectingInfoSound;
+    private bool playedWarningSound, playedCollectSound = false;
+    private MeshRenderer meshRendered;
+    private AudioManager audioManager;
     private void Start()
     {
         info = transform.parent.GetComponent<CollectInfo>();
@@ -22,20 +19,21 @@ public class InfoGIver : MonoBehaviour
         infoSlider.gameObject.SetActive(false);
         generalInfoGiverSlider = GameObject.Find("CollectedInfoSlider").GetComponent<Slider>();
         sliderImage.gameObject.SetActive(false);
-        aud = GetComponent<AudioSource>();
-        aud.playOnAwake = false;
         meshRendered = GetComponent<MeshRenderer>();
+        audioManager = GetComponent<AudioManager>();
     }
     private void Update()
     {
         if (infoSlider.value==100&&!isInfoGiven)
         {
-            aud.clip = informationGivenSoundEffect;
-            aud.Play();
             generalInfoGiverSlider.value += 20;
             sliderImage.gameObject.SetActive(true);
+            if (!playedCollectSound)
+            {
+                audioManager.PlaySoundEffect("informationGiven");
+                playedCollectSound = true;
+            }
             isInfoGiven = true;
-            aud.loop = false;
             Debug.Log("Slider is now full");
             Destroy(this.gameObject, 2f);
 
@@ -54,9 +52,7 @@ public class InfoGIver : MonoBehaviour
                 infoSlider.gameObject.SetActive(true);
                 if (!playedCollectingInfoSound)
                 {
-                    aud.clip = collectingInfoSoundEffect;
-                    aud.Play();
-                    aud.loop = true;
+                    audioManager.PlaySoundEffect("collectingInfo");
                     playedCollectingInfoSound = true;
                 }
                
@@ -71,9 +67,7 @@ public class InfoGIver : MonoBehaviour
                 meshRendered.material.color = Color.red;
                 if (!playedWarningSound)
                 {
-                    aud.clip = alertedSoundEffect;
-                    aud.Play();
-                    aud.loop = true;
+                    audioManager.PlaySoundEffect("alerted");
                     playedWarningSound = true;
                 }
                
@@ -85,13 +79,13 @@ public class InfoGIver : MonoBehaviour
     {
         infoSlider.gameObject.SetActive(false);
         playedCollectingInfoSound = false;
-        aud.Stop();
+        audioManager.GetComponent<AudioSource>().Stop();
         if (!info.colorsMatch)
         {
             Debug.Log("Colors dont match");
             playedWarningSound = false;
             playedCollectingInfoSound = false;
-            aud.Stop();
+            audioManager.GetComponent<AudioSource>().Stop();
         }
     }
        
